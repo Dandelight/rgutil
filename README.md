@@ -6,3 +6,4 @@ The repository contains:
 
 * `cvtv` package for `OpenCV`-based `torchvision` transformations, forked from <https://github.com/hityzy1122/opencv_transforms_torchvision/>.
 * `log` package for `get_logger`.
+* `loss.robust` from <https://github.com/HanxunH/Active-Passive-Losses/>.

@@ -1,12 +1,13 @@
 import os
 import logging
+import wandb
 
 
 def get_logger(
     name: str,
     log_dir: str,
     log_name: str = "run.log",
-    log_format: str = "%(asctime)s %(levelname)s %(message)s",
+    log_format: str = "[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s','%m-%d %H:%M:%S'",
     level: int = logging.INFO,
 ):
     logger = logging.getLogger(name)
@@ -17,3 +18,13 @@ def get_logger(
     logger.addHandler(hdlr)
     logger.setLevel(level)
     return logger
+
+
+def wandb_log_histogram(
+    key,
+    values,
+    step=None,
+    commit=True,
+    sync=True,
+):
+    wandb.log({key: values}, step=step, commit=commit, sync=sync)

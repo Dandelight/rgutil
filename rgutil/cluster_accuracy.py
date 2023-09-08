@@ -23,10 +23,42 @@ https://github.com/franrole/cclust_package/blob/v0.2.1/coclust/evaluation/extern
 """
 
 
+from ast import List
+import torch
 import numpy as np
 from sklearn.metrics import confusion_matrix
 from scipy.optimize import linear_sum_assignment
-from pgm import core_match
+from typing import List, Tuple
+
+
+def core_match(cost: torch.Tensor, *, verbose=False) -> List[Tuple[int, int]]:
+    """Core of Progressive Graph Matching.
+
+    Multiple rounds of matching
+    """
+    R = []
+    n_row, n_col = cost.shape
+
+    assert (
+        n_row >= n_col
+    ), "Number of rows in `cost` must be greater than number of columns"
+
+    unmatched_row = set(range(n_row))
+    while len(unmatched_row) != 0:
+        unmatched_row_list = list(unmatched_row)
+        cost_unmatched = cost[unmatched_row_list]
+        row_ind, col_ind = linear_sum_assignment(cost_unmatched)
+        matching_in_round = []
+        for x_idx, y_idx in zip(row_ind, col_ind):
+            x = unmatched_row_list[x_idx]
+            y = y_idx
+            matching_in_round.append((x, y))
+            unmatched_row.remove(x)
+        if verbose:
+            print(matching_in_round)
+        R.extend(matching_in_round)
+
+    return R
 
 
 def cluster_accuracy(true_row_labels, predicted_row_labels):

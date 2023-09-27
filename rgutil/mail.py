@@ -40,7 +40,7 @@ def test_send_mail():
     subject = "Subject"
     sender = "sender@example.com"
     content = "content"
-    recever = "recever@example.com"
+    recever = "receiver@example.com"
     password = "password"
 
     mailer = Mailer(QQMailServer)

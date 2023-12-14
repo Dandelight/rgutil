@@ -80,16 +80,16 @@ class NormalizedCrossEntropy(torch.nn.Module):
 
 
 class GeneralizedCrossEntropy(torch.nn.Module):
-    def __init__(self, num_classes, q=0.7):
+    def __init__(self, q=0.7):
         super(GeneralizedCrossEntropy, self).__init__()
-        self.num_classes = num_classes
         self.q = q
 
     def forward(self, pred, labels):
         pred = F.softmax(pred, dim=1)
+        num_classes = pred.size(1)
         pred = torch.clamp(pred, min=1e-7, max=1.0)
         label_one_hot = (
-            torch.nn.functional.one_hot(labels, self.num_classes).float().to()
+            torch.nn.functional.one_hot(labels, num_classes).float().to()
         )
         gce = (1.0 - torch.pow(torch.sum(label_one_hot * pred, dim=1), self.q)) / self.q
         return gce.mean()

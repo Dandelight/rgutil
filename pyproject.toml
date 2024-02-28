@@ -5,7 +5,13 @@ description = "A utility package for Raymond Guo."
 authors = [
     {name = "Ruiming Guo", email = "guoruiming@stu.scu.edu.cn"},
 ]
-dependencies = []
+dependencies = [
+    "wandb",
+    "matplotlib",
+    "scikit-learn",
+    "numpy",
+    "scipy"
+]
 requires-python = ">=3.8"
 readme = "README.md"
 license = {text = "MIT"}
